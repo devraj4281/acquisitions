@@ -1,7 +1,9 @@
 import js from '@eslint/js';
+import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default [
   js.configs.recommended,
+  eslintConfigPrettier,
   {
     languageOptions: {
       ecmaVersion: 2022,
@@ -20,10 +22,6 @@ export default [
       },
     },
     rules: {
-      indent: ['error', 2, { SwitchCase: 1 }],
-      'linebreak-style': ['error', 'unix'],
-      quotes: ['error', 'single'],
-      semi: ['error', 'always'],
       'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'no-console': 'off',
       'prefer-const': 'error',
