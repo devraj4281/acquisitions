@@ -1,4 +1,5 @@
 import { verifyToken } from '../utilis/jwt.js';
+import logger from '../config/logger.js';
 
 export const authenticate = (req, res, next) => {
   try {
@@ -14,6 +15,7 @@ export const authenticate = (req, res, next) => {
     }
 
     if (!token) {
+      logger.warn('Auth Middleware - No token provided in request');
       return res
         .status(401)
         .json({ message: 'Authentication required. No token provided.' });
@@ -23,6 +25,9 @@ export const authenticate = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
+    logger.warn(
+      `Auth Middleware - Token verification failed: ${error.message}`
+    );
     return res
       .status(401)
       .json({ message: 'Invalid or expired token', error: error.message });
