@@ -1,16 +1,16 @@
-import express from "express";
+import express from 'express';
 
 const router = express.Router();
 
 router.post('/signup', (req, res) => {
-    res.send('signup');
+  res.send('signup');
 });
 
 router.post('/signin', (req, res) => {
-    res.send('signin');
+  res.send('signin');
 });
 router.post('/signout', (req, res) => {
-    res.send('signout');
+  res.send('signout');
 });
 
 export default router;

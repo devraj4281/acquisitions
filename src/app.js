@@ -15,38 +15,43 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan('combined', {
+app.use(
+  morgan('combined', {
     stream: {
-        write: (message) => logger.info(message.trim()),
+      write: message => logger.info(message.trim()),
     },
-}));
-
+  })
+);
 
 app.get('/', (req, res) => {
-    logger.info('Hello from Acquisition Project');
-    res.status(200).send('Hello From Acquistion Project');
+  logger.info('Hello from Acquisition Project');
+  res.status(200).send('Hello From Acquistion Project');
 });
 app.post('/', (req, res) => {
-    res.send('Hello World!');
+  res.send('Hello World!');
 });
 
 app.put('/', (req, res) => {
-    res.send('Hello World!');
+  res.send('Hello World!');
 });
 
 app.delete('/', (req, res) => {
-    res.send('Hello World!');
+  res.send('Hello World!');
 });
 
 app.use((err, req, res, _next) => {
-    console.error(err);
-    res.status(500).send('Something broke!');
+  console.error(err);
+  res.status(500).send('Something broke!');
 });
 app.use('/api/auth', authRoutes);
 app.get('/api', (req, res) => {
-    res.status(200).json({ message: 'API is running' });
-})
+  res.status(200).json({ message: 'API is running' });
+});
 app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'ok', timestamp: new Date().toISOString(), uptime: process.uptime() });
+  res.status(200).json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+  });
 });
 export default app;
