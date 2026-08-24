@@ -1,8 +1,10 @@
-import bcrypt from 'bcryptjs';
-import { eq } from 'drizzle-orm';
-import { db } from '../config/database.js';
 import logger from '../config/logger.js';
-import { users } from '../models/user.model.js';
+import {
+  createUser,
+  findUserByEmail,
+  findUserById,
+} from '../services/user.service.js';
+import { comparePassword } from '../services/password.service.js';
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -25,33 +27,7 @@ export const signup = async (req, res, next) => {
     const { name, email, password, role } = req.body;
     logger.info(`Auth Controller - Signup attempt for email: ${email}`);
 
-    const existingUsers = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, email))
-      .limit(1);
-
-    if (existingUsers.length > 0) {
-      logger.warn(
-        `Auth Controller - Signup failed: User email already exists (${email})`
-      );
-      return errorResponse(res, {
-        statusCode: 409,
-        message: 'User with this email already exists',
-      });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const [newUser] = await db
-      .insert(users)
-      .values({
-        name,
-        email,
-        password: hashedPassword,
-        role: role || 'user',
-      })
-      .returning();
+    const newUser = await createUser({ name, email, password, role });
 
     const tokens = generateTokenPair(newUser);
     setAuthCookies(res, tokens);
@@ -70,6 +46,12 @@ export const signup = async (req, res, next) => {
       },
     });
   } catch (error) {
+    if (error.statusCode === 409) {
+      return errorResponse(res, {
+        statusCode: 409,
+        message: error.message,
+      });
+    }
     logger.error(`Auth Controller - Signup error: ${error.message}`);
     next(error);
   }
@@ -80,11 +62,7 @@ export const signin = async (req, res, next) => {
     const { email, password } = req.body;
     logger.info(`Auth Controller - Signin attempt for email: ${email}`);
 
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, email))
-      .limit(1);
+    const user = await findUserByEmail(email);
 
     if (!user) {
       logger.warn(`Auth Controller - Signin failed: User not found (${email})`);
@@ -94,7 +72,7 @@ export const signin = async (req, res, next) => {
       });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await comparePassword(password, user.password);
     if (!isPasswordValid) {
       logger.warn(
         `Auth Controller - Signin failed: Invalid password for email ${email}`
@@ -146,11 +124,7 @@ export const signout = async (req, res, next) => {
 export const getMe = async (req, res, next) => {
   try {
     logger.info(`Auth Controller - Fetching user profile: ID ${req.user.id}`);
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.id, req.user.id))
-      .limit(1);
+    const user = await findUserById(req.user.id);
 
     if (!user) {
       logger.warn(
@@ -188,11 +162,7 @@ export const refreshToken = async (req, res, _next) => {
     }
 
     const decoded = verifyRefreshToken(token);
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.id, decoded.id))
-      .limit(1);
+    const user = await findUserById(decoded.id);
 
     if (!user) {
       logger.warn(
