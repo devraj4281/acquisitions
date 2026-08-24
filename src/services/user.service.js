@@ -1,8 +1,8 @@
 import { eq } from 'drizzle-orm';
-import { db } from '../config/database.js';
-import logger from '../config/logger.js';
-import { users } from '../models/user.model.js';
-import { hashPassword } from './password.service.js';
+import { db } from '#config/database.js';
+import logger from '#config/logger.js';
+import { users } from '#models/user.model.js';
+import { hashPassword } from '#services/password.service.js';
 
 /**
  * Creates a new user in the database with a hashed password.

@@ -5,7 +5,7 @@ import arcjet, {
   tokenBucket,
   slidingWindow,
 } from '@arcjet/node';
-import logger from './logger.js';
+import logger from '#config/logger.js';
 
 const ARCJET_KEY = process.env.ARCJET_KEY || '';
 

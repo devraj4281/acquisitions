@@ -5,15 +5,15 @@ import {
   signout,
   getMe,
   refreshToken,
-} from '../controllers/auth.controller.js';
+} from '#controllers/auth.controller.js';
 import {
   validate,
   signupSchema,
   signinSchema,
   refreshTokenSchema,
-} from '../validations/auth.validation.js';
-import { authenticate } from '../middleware/auth.middleware.js';
-import { signupArcjetMiddleware } from '../middleware/arcjet.middleware.js';
+} from '#validations/auth.validation.js';
+import { authenticate } from '#middleware/auth.middleware.js';
+import { signupArcjetMiddleware } from '#middleware/arcjet.middleware.js';
 
 const router = express.Router();
 

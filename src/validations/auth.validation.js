@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { validationErrorResponse } from '../utilis/format.js';
+import { validationErrorResponse } from '#utils/format.js';
 
 const emailSchema = z
   .string({ required_error: 'Email is required' })

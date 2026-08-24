@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import logger from '../config/logger.js';
+import logger from '#config/logger.js';
 
 const DEFAULT_SALT_ROUNDS = 10;
 

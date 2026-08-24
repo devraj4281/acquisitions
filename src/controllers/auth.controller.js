@@ -1,26 +1,26 @@
-import logger from '../config/logger.js';
+import logger from '#config/logger.js';
 import {
   createUser,
   findUserByEmail,
   findUserById,
-} from '../services/user.service.js';
-import { comparePassword } from '../services/password.service.js';
+} from '#services/user.service.js';
+import { comparePassword } from '#services/password.service.js';
 import {
   generateAccessToken,
   generateRefreshToken,
   generateTokenPair,
   verifyRefreshToken,
-} from '../utilis/jwt.js';
+} from '#utils/jwt.js';
 import {
   setTokenCookie,
   clearAuthCookies,
   setAuthCookies,
-} from '../utilis/cookie.js';
+} from '#utils/cookie.js';
 import {
   successResponse,
   errorResponse,
   formatUserResponse,
-} from '../utilis/format.js';
+} from '#utils/format.js';
 
 export const signup = async (req, res, next) => {
   try {

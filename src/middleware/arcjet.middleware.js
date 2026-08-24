@@ -1,6 +1,6 @@
-import { aj, signupArcjet } from '../config/arcjet.js';
-import logger from '../config/logger.js';
-import { errorResponse } from '../utilis/format.js';
+import { aj, signupArcjet } from '#config/arcjet.js';
+import logger from '#config/logger.js';
+import { errorResponse } from '#utils/format.js';
 
 /**
  * Express middleware to protect endpoints using primary Arcjet rules.
