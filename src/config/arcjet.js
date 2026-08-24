@@ -13,10 +13,6 @@ if (!ARCJET_KEY) {
   logger.warn('Arcjet - ARCJET_KEY is missing from environment variables');
 }
 
-/**
- * Primary Arcjet security instance for application-wide protection.
- * Configured with WAF Shield protection and malicious Bot detection.
- */
 export const aj = arcjet({
   key: ARCJET_KEY,
   characteristics: ['ip'],
@@ -31,10 +27,6 @@ export const aj = arcjet({
   ],
 });
 
-/**
- * Specialized Arcjet instance for auth & registration routes.
- * Includes disposable/invalid email validation and IP rate limiting.
- */
 export const signupArcjet = arcjet({
   key: ARCJET_KEY,
   characteristics: ['ip'],
@@ -52,10 +44,6 @@ export const signupArcjet = arcjet({
   ],
 });
 
-/**
- * General API rate limiting instance using Sliding Window algorithm.
- * Limits client IP to 100 requests per minute.
- */
 export const rateLimitArcjet = arcjet({
   key: ARCJET_KEY,
   characteristics: ['ip'],

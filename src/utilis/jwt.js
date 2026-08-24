@@ -49,11 +49,3 @@ export const generateTokenPair = user => {
   };
 };
 
-export {
-  setCookie,
-  clearCookie,
-  setTokenCookie,
-  clearTokenCookie,
-  setAuthCookies,
-  clearAuthCookies,
-} from '#utils/cookie.js';
