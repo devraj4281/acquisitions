@@ -13,10 +13,11 @@ import {
   refreshTokenSchema,
 } from '../validations/auth.validation.js';
 import { authenticate } from '../middleware/auth.middleware.js';
+import { signupArcjetMiddleware } from '../middleware/arcjet.middleware.js';
 
 const router = express.Router();
 
-router.post('/signup', validate(signupSchema), signup);
+router.post('/signup', validate(signupSchema), signupArcjetMiddleware, signup);
 router.post('/signin', validate(signinSchema), signin);
 router.post('/signout', signout);
 router.post('/refresh-token', validate(refreshTokenSchema), refreshToken);

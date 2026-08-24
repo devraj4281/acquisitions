@@ -39,6 +39,7 @@
   },
   "homepage": "https://github.com/devraj4281/acquisitions#readme",
   "dependencies": {
+    "@arcjet/node": "^1.10.0",
     "@neondatabase/serverless": "^1.1.0",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",

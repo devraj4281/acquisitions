@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.routes.js';
+import { arcjetMiddleware } from './middleware/arcjet.middleware.js';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(arcjetMiddleware);
 app.use(
   morgan('combined', {
     stream: {
