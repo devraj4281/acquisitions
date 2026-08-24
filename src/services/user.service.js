@@ -4,17 +4,6 @@ import logger from '#config/logger.js';
 import { users } from '#models/user.model.js';
 import { hashPassword } from '#services/password.service.js';
 
-/**
- * Creates a new user in the database with a hashed password.
- *
- * @param {Object} userData - User creation data.
- * @param {string} userData.name - Full name of the user.
- * @param {string} userData.email - Unique email address of the user.
- * @param {string} userData.password - Plain text password (will be hashed).
- * @param {string} [userData.role='user'] - User role (e.g., 'user', 'admin').
- * @returns {Promise<Object>} The newly created user object.
- * @throws {Error} If required fields are missing, user already exists, or DB insert fails.
- */
 export const createUser = async ({ name, email, password, role = 'user' }) => {
   if (!name || typeof name !== 'string') {
     logger.error('User Service - Create user failed: Name is required');
@@ -34,7 +23,6 @@ export const createUser = async ({ name, email, password, role = 'user' }) => {
   try {
     logger.info(`User Service - Creating user for email: ${email}`);
 
-    // Check if user already exists
     const existingUsers = await db
       .select()
       .from(users)
@@ -48,10 +36,8 @@ export const createUser = async ({ name, email, password, role = 'user' }) => {
       throw error;
     }
 
-    // Hash password using password service
     const hashedPassword = await hashPassword(password);
 
-    // Insert user into database
     const [newUser] = await db
       .insert(users)
       .values({
@@ -73,12 +59,6 @@ export const createUser = async ({ name, email, password, role = 'user' }) => {
   }
 };
 
-/**
- * Finds a user by their email address.
- *
- * @param {string} email - Email address to search for.
- * @returns {Promise<Object|null>} The user object or null if not found.
- */
 export const findUserByEmail = async email => {
   if (!email || typeof email !== 'string') {
     return null;
@@ -101,12 +81,6 @@ export const findUserByEmail = async email => {
   }
 };
 
-/**
- * Finds a user by their ID.
- *
- * @param {number|string} id - User ID to search for.
- * @returns {Promise<Object|null>} The user object or null if not found.
- */
 export const findUserById = async id => {
   if (!id) {
     return null;
@@ -127,13 +101,6 @@ export const findUserById = async id => {
   }
 };
 
-/**
- * Updates a user by their ID.
- *
- * @param {number|string} id - User ID to update.
- * @param {Object} updateData - Data fields to update.
- * @returns {Promise<Object>} The updated user object.
- */
 export const updateUser = async (id, updateData) => {
   if (!id) {
     throw new Error('User ID is required for update');
@@ -184,12 +151,6 @@ export const updateUser = async (id, updateData) => {
   }
 };
 
-/**
- * Deletes a user by their ID.
- *
- * @param {number|string} id - User ID to delete.
- * @returns {Promise<boolean>} True if deleted successfully.
- */
 export const deleteUser = async id => {
   if (!id) {
     throw new Error('User ID is required for deletion');

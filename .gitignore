@@ -37,3 +37,10 @@ coverage/
 # Temporary Files
 tmp/
 temp/
+
+# Neon Local branch metadata
+.neon_local/
+
+# Documentation
+README.md
+

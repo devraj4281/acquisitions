@@ -2,9 +2,6 @@ import { aj, signupArcjet } from '#config/arcjet.js';
 import logger from '#config/logger.js';
 import { errorResponse } from '#utils/format.js';
 
-/**
- * Express middleware to protect endpoints using primary Arcjet rules.
- */
 export const arcjetMiddleware = async (req, res, next) => {
   try {
     const decision = await aj.protect(req);
@@ -44,14 +41,10 @@ export const arcjetMiddleware = async (req, res, next) => {
     next();
   } catch (error) {
     logger.error(`Arcjet Middleware Error: ${error.message}`);
-    // Fail-open strategy to prevent bringing down app if security service is unreachable
     next();
   }
 };
 
-/**
- * Express middleware to validate email and apply rate limits on signup route.
- */
 export const signupArcjetMiddleware = async (req, res, next) => {
   try {
     const email = req.body?.email || '';

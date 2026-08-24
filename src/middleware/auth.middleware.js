@@ -3,11 +3,6 @@ import logger from '#config/logger.js';
 import { errorResponse } from '#utils/format.js';
 import { findUserById } from '#services/user.service.js';
 
-/**
- * Authentication middleware.
- * Extracts and verifies JWT token from Authorization header or cookies,
- * fetches user from DB, and attaches user entity to req.user.
- */
 export const authenticate = async (req, res, next) => {
   try {
     let token = null;
@@ -54,13 +49,6 @@ export const authenticate = async (req, res, next) => {
   }
 };
 
-/**
- * Authorization middleware for Role-Based Access Control (RBAC).
- * Restricts access to users with specified role(s).
- *
- * @param {...string} allowedRoles - Roles permitted to access the route (e.g., 'admin', 'user').
- * @returns {Function} Express middleware function.
- */
 export const authorize = (...allowedRoles) => {
   return (req, res, next) => {
     if (!req.user) {
@@ -87,10 +75,6 @@ export const authorize = (...allowedRoles) => {
   };
 };
 
-/**
- * Optional authentication middleware.
- * Attaches user to req.user if a valid token is provided, but does not block unauthenticated requests.
- */
 export const optionalAuthenticate = async (req, res, next) => {
   try {
     let token = null;

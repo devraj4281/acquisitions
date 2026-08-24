@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: .
+      target: production
+    ports:
+      - '${PORT:-3000}:3000'
+    env_file:
+      - .env.production
+    environment:
+      NODE_ENV: production
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    restart: unless-stopped

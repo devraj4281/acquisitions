@@ -12,7 +12,6 @@ import {
   verifyRefreshToken,
 } from '#utils/jwt.js';
 import {
-  setTokenCookie,
   clearAuthCookies,
   setAuthCookies,
 } from '#utils/cookie.js';
@@ -31,7 +30,6 @@ export const signup = async (req, res, next) => {
 
     const tokens = generateTokenPair(newUser);
     setAuthCookies(res, tokens);
-    setTokenCookie(res, tokens.accessToken);
 
     logger.info(
       `Auth Controller - User registered successfully: ID ${newUser.id} (${email})`
@@ -85,7 +83,6 @@ export const signin = async (req, res, next) => {
 
     const tokens = generateTokenPair(user);
     setAuthCookies(res, tokens);
-    setTokenCookie(res, tokens.accessToken);
 
     logger.info(
       `Auth Controller - User signed in successfully: ID ${user.id} (${email})`
@@ -179,7 +176,6 @@ export const refreshToken = async (req, res, _next) => {
     const tokens = { accessToken, refreshToken: newRefreshToken };
 
     setAuthCookies(res, tokens);
-    setTokenCookie(res, accessToken);
 
     logger.info(
       `Auth Controller - Token refreshed successfully for User ID ${user.id}`

@@ -46,8 +46,9 @@ export const signinSchema = z.object({
 
 export const refreshTokenSchema = z.object({
   refreshToken: z
-    .string({ required_error: 'Refresh token is required' })
-    .min(1, 'Refresh token cannot be empty'),
+    .string()
+    .min(1, 'Refresh token cannot be empty')
+    .optional(),
 });
 
 export const changePasswordSchema = z

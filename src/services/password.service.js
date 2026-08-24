@@ -3,14 +3,6 @@ import logger from '#config/logger.js';
 
 const DEFAULT_SALT_ROUNDS = 10;
 
-/**
- * Hashes a plain text password using bcrypt.
- *
- * @param {string} password - The plain text password to hash.
- * @param {number} [saltRounds=10] - The cost factor for hashing (default: 10).
- * @returns {Promise<string>} The generated password hash.
- * @throws {Error} If password is not provided or hashing fails.
- */
 export const hashPassword = async (
   password,
   saltRounds = DEFAULT_SALT_ROUNDS
@@ -33,14 +25,6 @@ export const hashPassword = async (
   }
 };
 
-/**
- * Compares a plain text password with an existing bcrypt hash.
- *
- * @param {string} plainPassword - The plain text password to verify.
- * @param {string} hashedPassword - The hashed password to compare against.
- * @returns {Promise<boolean>} True if the password matches the hash, false otherwise.
- * @throws {Error} If inputs are invalid or comparison fails.
- */
 export const comparePassword = async (plainPassword, hashedPassword) => {
   if (!plainPassword || typeof plainPassword !== 'string') {
     logger.error(
@@ -68,13 +52,6 @@ export const comparePassword = async (plainPassword, hashedPassword) => {
   }
 };
 
-/**
- * Checks if a stored password hash needs to be rehashed with updated cost factor.
- *
- * @param {string} hashedPassword - The existing bcrypt hash.
- * @param {number} [targetSaltRounds=10] - Target salt rounds.
- * @returns {boolean} True if the hash algorithm or salt rounds are outdated.
- */
 export const needsRehash = (
   hashedPassword,
   targetSaltRounds = DEFAULT_SALT_ROUNDS
