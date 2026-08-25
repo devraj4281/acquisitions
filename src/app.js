@@ -10,7 +10,6 @@ import { arcjetMiddleware } from '#middleware/arcjet.middleware.js';
 const app = express();
 
 app.set('trust proxy', true);
-
 app.use(helmet());
 
 const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
