@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRoutes from '#routes/auth.routes.js';
+import userRoutes from '#routes/user.routes.js';
 import { arcjetMiddleware } from '#middleware/arcjet.middleware.js';
 
 const app = express();
@@ -49,6 +50,8 @@ app.use(
   })
 );
 
+// ─── Health & root ─────────────────────────────────────────────────────────────
+
 app.get('/health', (_req, res) => {
   res.status(200).json({
     status: 'ok',
@@ -57,15 +60,40 @@ app.get('/health', (_req, res) => {
   });
 });
 
-app.get('/api', (_req, res) => {
-  res.status(200).json({ message: 'API is running' });
+app.get('/', (_req, res) => {
+  res.status(200).json({
+    success: true,
+    message: '🚀 Acquisitions API is running',
+    version: '1.0.0',
+    endpoints: {
+      health: '/health',
+      api: '/api',
+      auth: '/api/auth',
+      users: '/api/users',
+    },
+  });
 });
 
+app.get('/api', (_req, res) => {
+  res.status(200).json({
+    success: true,
+    message: '🚀 Acquisitions API is running',
+    version: '1.0.0',
+  });
+});
+
+// ─── Routes ────────────────────────────────────────────────────────────────────
+
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+
+// ─── 404 handler ──────────────────────────────────────────────────────────────
 
 app.use((_req, res) => {
   res.status(404).json({ success: false, message: 'Route not found' });
 });
+
+// ─── Global error handler ──────────────────────────────────────────────────────
 
 app.use((err, req, res, _next) => {
   logger.error(`Unhandled error: ${err.message}`, { stack: err.stack });
